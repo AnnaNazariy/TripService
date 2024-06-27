@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using BlazorApp1.Client.Pages;
 using BlazorApp1.Components;
 using BlazorApp1.Data;
+using BlazorApp1.Services;
 
 public class Program
 {
@@ -19,9 +20,13 @@ public class Program
             .AddInteractiveServerComponents()
             .AddInteractiveWebAssemblyComponents();
 
+        // Реєстрація сервісів
+        builder.Services.AddScoped<HotelService>();
+        builder.Services.AddScoped<ReviewService>(); // Додаємо ReviewService
+
         // Додаємо DbContext для роботи з базою даних
         builder.Services.AddDbContext<TripServiceDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); // Використовуємо UseSqlServer
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         var app = builder.Build();
 

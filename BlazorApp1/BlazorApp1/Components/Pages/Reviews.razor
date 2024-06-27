@@ -1,0 +1,74 @@
+﻿@page "/reviews"
+@using BlazorApp1.Models
+@using BlazorApp1.Services
+@inject ReviewService reviewService
+
+<h3>Customer Reviews</h3>
+
+@if (reviews == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Comments</th>
+                <th>Rating</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var review in reviews)
+            {
+                <tr>
+                    <td>@review.UserName</td>
+                    <td>@review.Comments</td>
+                    <td>@review.Rating</td>
+                    <td>@review.Date.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<h4>Add a Review</h4>
+<EditForm Model="newReview" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="userName" class="form-label">User Name</label>
+        <InputText id="userName" class="form-control" @bind-Value="newReview.UserName" />
+    </div>
+    <div class="mb-3">
+        <label for="comments" class="form-label">Comments</label>
+        <InputTextArea id="comments" class="form-control" @bind-Value="newReview.Comments" />
+    </div>
+    <div class="mb-3">
+        <label for="rating" class="form-label">Rating</label>
+        <InputNumber id="rating" class="form-control" @bind-Value="newReview.Rating" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code {
+    private List<Review> reviews;
+    private Review newReview = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        reviews = await reviewService.GetAllReviewsAsync();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        newReview.Date = DateTime.Now;
+        await reviewService.AddReviewAsync(newReview);
+        newReview = new Review();
+        reviews = await reviewService.GetAllReviewsAsync();
+    }
+}

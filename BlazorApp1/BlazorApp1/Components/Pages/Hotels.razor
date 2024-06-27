@@ -1,0 +1,56 @@
+﻿@page "/hotels"
+@using BlazorApp1.Models
+@using BlazorApp1.Services
+@inject HotelService hotelService
+
+<h3>Hotels List</h3>
+
+@if (hotels == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>City</th>
+                <th>Employee Count</th>
+                <th>Base Rate</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var hotel in hotels)
+            {
+                <tr>
+                    <td>@hotel.Name</td>
+                    <td>@hotel.City.Name, @hotel.City.CountryCode</td>
+                    <td>@hotel.EmployeeCount</td>
+                    <td>@hotel.BaseRate</td>
+                    <td>
+                        <a href="/hotels/@hotel.Id">Details</a> |
+                        <a href="/hotels/edit/@hotel.Id">Edit</a> |
+                        <button @onclick="@(async () => await DeleteHotel(hotel.Id))">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<Hotel> hotels;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hotels = await hotelService.GetAllHotelsAsync();
+    }
+
+    private async Task DeleteHotel(int id)
+    {
+        await hotelService.DeleteHotelAsync(id);
+        hotels = await hotelService.GetAllHotelsAsync();
+    }
+}
