@@ -19,7 +19,7 @@ namespace BlazorApp1.Data.Repositories
             return await _context.Rooms.Include(r => r.Hotel).ToListAsync();
         }
 
-        public async Task<Room?> GetRoomByIdAsync(int id) // Changed to return nullable Room
+        public async Task<Room?> GetRoomByIdAsync(int id) 
         {
             return await _context.Rooms.Include(r => r.Hotel).FirstOrDefaultAsync(r => r.Id == id);
         }
