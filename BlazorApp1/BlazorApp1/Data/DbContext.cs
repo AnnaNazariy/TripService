@@ -16,7 +16,7 @@ namespace BlazorApp1.Data
         public DbSet<Trip> Trips { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountTrip> AccountsTrips { get; set; }
-        public DbSet<Review> Reviews { get; set; } // Додано DbSet для відгуків
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,6 +54,29 @@ namespace BlazorApp1.Data
                 .Property(r => r.Rating).HasDefaultValue(1).HasColumnType("int");
             modelBuilder.Entity<Review>()
                 .Property(r => r.Date).HasDefaultValueSql("GETDATE()");
+
+            // Приклад індексу для колонки Name в таблиці Cities
+            modelBuilder.Entity<City>()
+                .HasIndex(c => c.Name);
+
+            // Приклад унікального обмеження для поля Email в таблиці Accounts
+            modelBuilder.Entity<Account>()
+                .HasIndex(a => a.Email)
+                .IsUnique();
+
+            // Приклад налаштування зовнішнього ключа для таблиці Rooms
+            modelBuilder.Entity<Room>()
+                .HasOne(r => r.Hotel)
+                .WithMany(h => h.Rooms)
+                .HasForeignKey(r => r.HotelId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Приклад налаштування зовнішнього ключа для таблиці Hotels
+            modelBuilder.Entity<Hotel>()
+                .HasOne(h => h.City)  // навігаційна властивість
+                .WithMany(c => c.Hotels) // зворотний зв'язок
+                .HasForeignKey(h => h.CityId)  // зовнішній ключ
+                .IsRequired();       // обов'язковий зв'язок
         }
     }
 }

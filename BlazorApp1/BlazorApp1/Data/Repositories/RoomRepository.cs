@@ -1,12 +1,11 @@
-﻿ using BlazorApp1.Data; // Переконайтеся, що цей using містить простір імен, де знаходиться ApplicationDbContext
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using BlazorApp1.Models;
-    using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using BlazorApp1.Models;
+using Microsoft.EntityFrameworkCore;
 
-    namespace BlazorApp1.Data.Repositories
-    {
-        public class RoomRepository
+namespace BlazorApp1.Data.Repositories
+{
+    public class RoomRepository
     {
         private readonly TripServiceDbContext _context;
 
@@ -15,13 +14,12 @@
             _context = context;
         }
 
-
         public async Task<List<Room>> GetAllRoomsAsync()
         {
             return await _context.Rooms.Include(r => r.Hotel).ToListAsync();
         }
 
-        public async Task<Room> GetRoomByIdAsync(int id)
+        public async Task<Room?> GetRoomByIdAsync(int id) // Changed to return nullable Room
         {
             return await _context.Rooms.Include(r => r.Hotel).FirstOrDefaultAsync(r => r.Id == id);
         }

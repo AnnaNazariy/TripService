@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorApp1.Models; 
-using Microsoft.EntityFrameworkCore; 
+using BlazorApp1.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp1.Data.Repositories
 {
     public class AccountRepository
     {
-        private readonly TripServiceDbContext _context; 
+        private readonly TripServiceDbContext _context;
 
         public AccountRepository(TripServiceDbContext context)
         {
@@ -19,7 +19,7 @@ namespace BlazorApp1.Data.Repositories
             return await _context.Accounts.ToListAsync();
         }
 
-        public async Task<Account> GetAccountByIdAsync(int id)
+        public async Task<Account?> GetAccountByIdAsync(int id) 
         {
             return await _context.Accounts.FindAsync(id);
         }

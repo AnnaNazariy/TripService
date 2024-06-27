@@ -19,7 +19,7 @@ namespace BlazorApp1.Data.Repositories
             return await _context.Hotels.Include(h => h.City).ToListAsync();
         }
 
-        public async Task<Hotel> GetHotelByIdAsync(int id)
+        public async Task<Hotel?> GetHotelByIdAsync(int id) 
         {
             return await _context.Hotels.Include(h => h.City).FirstOrDefaultAsync(h => h.Id == id);
         }

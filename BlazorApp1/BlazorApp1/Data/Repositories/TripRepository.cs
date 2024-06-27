@@ -19,7 +19,7 @@ namespace BlazorApp1.Data.Repositories
             return await _context.Trips.Include(t => t.Room).ToListAsync();
         }
 
-        public async Task<Trip> GetTripByIdAsync(int id)
+        public async Task<Trip?> GetTripByIdAsync(int id) // Changed to return nullable Trip
         {
             return await _context.Trips.Include(t => t.Room).FirstOrDefaultAsync(t => t.Id == id);
         }
