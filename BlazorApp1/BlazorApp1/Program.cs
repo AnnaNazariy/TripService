@@ -36,7 +36,7 @@ public class Program
         }
         else
         {
-            app.UseExceptionHandler("/Error", createScopeForErrors: true);
+            app.UseExceptionHandler("/Error");
             app.UseHsts();
         }
 

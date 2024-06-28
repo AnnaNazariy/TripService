@@ -1,0 +1,65 @@
+﻿@page "/hotels"
+@inject HotelService HotelService
+
+<h3>Hotels</h3>
+
+@if (hotels == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Base Rate</th>
+                <th>City</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var hotel in hotels)
+            {
+                <tr>
+                    <td>@hotel.Name</td>
+                    <td>@hotel.Address</td>
+                    <td>@hotel.BaseRate</td>
+                    <td>@hotel.City.Name</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditHotel(hotel.Id)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteHotel(hotel.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<button class="btn btn-success" @onclick="AddHotel">Add New Hotel</button>
+
+@code {
+    private List<Hotel> hotels;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hotels = await HotelService.GetAllHotelsAsync();
+    }
+
+    private void AddHotel()
+    {
+        // Navigate to AddEditHotel component
+    }
+
+    private void EditHotel(int id)
+    {
+        // Navigate to AddEditHotel component with id
+    }
+
+    private async Task DeleteHotel(int id)
+    {
+        await HotelService.DeleteHotelAsync(id);
+        hotels = await HotelService.GetAllHotelsAsync(); // Refresh list
+    }
+}

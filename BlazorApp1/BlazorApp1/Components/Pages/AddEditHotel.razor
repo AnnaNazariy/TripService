@@ -1,0 +1,55 @@
+﻿@page "/hotels/addedit/{Id:int?}"
+@inject HotelService HotelService
+@inject NavigationManager NavigationManager
+
+<h3>@(hotel.Id == 0 ? "Add Hotel" : "Edit Hotel")</h3>
+
+<EditForm Model="hotel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>Name:</label>
+        <InputText class="form-control" @bind-Value="hotel.Name" />
+    </div>
+    <div class="form-group">
+        <label>Address:</label>
+        <InputText class="form-control" @bind-Value="hotel.Address" />
+    </div>
+    <div class="form-group">
+        <label>Base Rate:</label>
+        <InputNumber class="form-control" @bind-Value="hotel.BaseRate" />
+    </div>
+    <div class="form-group">
+        <label>City:</label>
+        <InputText class="form-control" @bind-Value="hotel.City.Name" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    private Hotel hotel = new Hotel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id.HasValue)
+        {
+            hotel = await HotelService.GetHotelByIdAsync(Id.Value);
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (hotel.Id == 0)
+        {
+            await HotelService.AddHotelAsync(hotel);
+        }
+        else
+        {
+            await HotelService.UpdateHotelAsync(hotel);
+        }
+        NavigationManager.NavigateTo("/hotels");
+    }
+}
