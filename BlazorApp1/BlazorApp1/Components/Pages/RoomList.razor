@@ -1,0 +1,27 @@
+﻿@page "/rooms"
+@inject RoomService RoomService
+
+<h3>Rooms</h3>
+
+@if (rooms == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ul>
+        @foreach (var room in rooms)
+        {
+            <li>@room.Type (@room.Price)</li>
+        }
+    </ul>
+}
+
+@code {
+    private List<Room> rooms;
+
+    protected override async Task OnInitializedAsync()
+    {
+        rooms = await RoomService.GetRoomsAsync();
+    }
+}

@@ -1,0 +1,37 @@
+﻿@page "/add-trip"
+@inject TripService TripService
+@inject NavigationManager Navigation
+
+<h3>Add Trip</h3>
+
+<EditForm Model="newTrip" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>Room ID:</label>
+        <InputNumber id="roomId" @bind-Value="newTrip.RoomId" />
+    </div>
+    <div>
+        <label>Book Date:</label>
+        <InputDate id="bookDate" @bind-Value="newTrip.BookDate" />
+    </div>
+    <div>
+        <label>Arrival Date:</label>
+        <InputDate id="arrivalDate" @bind-Value="newTrip.ArrivalDate" />
+    </div>
+    <div>
+        <label>Return Date:</label>
+        <InputDate id="returnDate" @bind-Value="newTrip.ReturnDate" />
+    </div>
+    <button type="submit">Add Trip</button>
+</EditForm>
+
+@code {
+    private Trip newTrip = new Trip();
+
+    private async Task HandleValidSubmit()
+    {
+        await TripService.AddTripAsync(newTrip);
+        Navigation.NavigateTo("/trips");
+    }
+}

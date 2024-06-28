@@ -1,0 +1,29 @@
+﻿@page "/add-review"
+@inject ReviewService ReviewService
+@inject NavigationManager Navigation
+
+<h3>Add Review</h3>
+
+<EditForm Model="newReview" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>User Name:</label>
+        <InputText id="userName" @bind-Value="newReview.UserName" />
+    </div>
+    <div>
+        <label>Comments:</label>
+        <InputText id="comments" @bind-Value="newReview.Comments" />
+    </div>
+    <button type="submit">Add Review</button>
+</EditForm>
+
+@code {
+    private Review newReview = new Review();
+
+    private async Task HandleValidSubmit()
+    {
+        await ReviewService.AddReviewAsync(newReview);
+        Navigation.NavigateTo("/reviews");
+    }
+}

@@ -1,0 +1,29 @@
+﻿@page "/add-city"
+@inject CityService CityService
+@inject NavigationManager Navigation
+
+<h3>Add City</h3>
+
+<EditForm Model="newCity" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>Name:</label>
+        <InputText id="name" @bind-Value="newCity.Name" />
+    </div>
+    <div>
+        <label>Country Code:</label>
+        <InputText id="countryCode" @bind-Value="newCity.CountryCode" />
+    </div>
+    <button type="submit">Add City</button>
+</EditForm>
+
+@code {
+    private City newCity = new City();
+
+    private async Task HandleValidSubmit()
+    {
+        await CityService.AddCityAsync(newCity);
+        Navigation.NavigateTo("/cities");
+    }
+}

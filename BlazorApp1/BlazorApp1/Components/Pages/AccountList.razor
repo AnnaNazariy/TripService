@@ -1,0 +1,27 @@
+﻿@page "/accounts"
+@inject AccountService AccountService
+
+<h3>Accounts</h3>
+
+@if (accounts == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ul>
+        @foreach (var account in accounts)
+        {
+            <li>@account.Email</li>
+        }
+    </ul>
+}
+
+@code {
+    private List<Account> accounts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        accounts = await AccountService.GetAccountsAsync();
+    }
+}

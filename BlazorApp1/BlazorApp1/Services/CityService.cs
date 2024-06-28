@@ -35,5 +35,10 @@ namespace BlazorApp1.Services
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<List<City>> GetCitiesAsync()
+        {
+            return await _context.Cities.ToListAsync();
+        }
     }
+
 }

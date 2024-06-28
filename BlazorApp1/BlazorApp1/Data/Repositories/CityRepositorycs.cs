@@ -34,7 +34,7 @@ namespace BlazorApp1.Data.Repositories
 
         public async Task UpdateCityAsync(City city)
         {
-            _context.Cities.Update(city);
+            _context.Entry(city).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 

@@ -1,0 +1,37 @@
+﻿@page "/add-room"
+@inject RoomService RoomService
+@inject NavigationManager Navigation
+
+<h3>Add Room</h3>
+
+<EditForm Model="newRoom" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>Type:</label>
+        <InputText id="type" @bind-Value="newRoom.Type" />
+    </div>
+    <div>
+        <label>Price:</label>
+        <InputNumber id="price" @bind-Value="newRoom.Price" />
+    </div>
+    <div>
+        <label>Beds:</label>
+        <InputNumber id="beds" @bind-Value="newRoom.Beds" />
+    </div>
+    <div>
+        <label>Hotel ID:</label>
+        <InputNumber id="hotelId" @bind-Value="newRoom.HotelId" />
+    </div>
+    <button type="submit">Add Room</button>
+</EditForm>
+
+@code {
+    private Room newRoom = new Room();
+
+    private async Task HandleValidSubmit()
+    {
+        await RoomService.AddRoomAsync(newRoom);
+        Navigation.NavigateTo("/rooms");
+    }
+}

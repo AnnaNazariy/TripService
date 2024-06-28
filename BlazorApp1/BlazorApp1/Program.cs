@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
-using BlazorApp1.Client.Pages;
-using BlazorApp1.Components;
 using BlazorApp1.Data;
 using BlazorApp1.Services;
 
@@ -15,18 +12,18 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Додаємо необхідні сервіси
-        builder.Services.AddRazorComponents()
-            .AddInteractiveServerComponents()
-            .AddInteractiveWebAssemblyComponents();
+        builder.Services.AddRazorPages();
+        builder.Services.AddServerSideBlazor();
 
-        // Реєстрація сервісів
         builder.Services.AddScoped<HotelService>();
-        builder.Services.AddScoped<ReviewService>(); // Додаємо ReviewService
+        builder.Services.AddScoped<ReviewService>();
 
-        // Додаємо DbContext для роботи з базою даних
+        builder.Services.AddHttpClient();
+
         builder.Services.AddDbContext<TripServiceDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+        builder.WebHost.UseUrls("http://localhost:7000", "https://localhost:7001");
 
         var app = builder.Build();
 
@@ -42,13 +39,11 @@ public class Program
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
-        app.UseAntiforgery();
+        app.UseRouting();
+        app.UseAuthorization();
 
-        // Мапимо основний компонент Blazor
-        app.MapRazorComponents<App>()
-            .AddInteractiveServerRenderMode()
-            .AddInteractiveWebAssemblyRenderMode()
-            .AddAdditionalAssemblies(typeof(BlazorApp1.Client._Imports).Assembly);
+        app.MapRazorPages();
+        app.MapBlazorHub();
 
         app.Run();
     }

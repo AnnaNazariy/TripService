@@ -15,6 +15,11 @@ namespace BlazorApp1.Services
             _context = context;
         }
 
+        public async Task<List<Account>> GetAccountsAsync()
+        {
+            return await _context.Accounts.ToListAsync();
+        }
+
         public async Task<List<City>> GetCitiesAsync()
         {
             return await _context.Cities.ToListAsync();
@@ -31,4 +36,5 @@ namespace BlazorApp1.Services
             return await _context.Accounts.FindAsync(id);
         }
     }
+
 }

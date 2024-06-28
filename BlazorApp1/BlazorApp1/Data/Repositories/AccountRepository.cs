@@ -19,7 +19,7 @@ namespace BlazorApp1.Data.Repositories
             return await _context.Accounts.ToListAsync();
         }
 
-        public async Task<Account?> GetAccountByIdAsync(int id)
+        public async Task<Account> GetAccountByIdAsync(int id)
         {
             return await _context.Accounts.FindAsync(id);
         }

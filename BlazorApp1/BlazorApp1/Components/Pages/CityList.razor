@@ -1,0 +1,27 @@
+﻿@page "/cities"
+@inject CityService CityService
+
+<h3>Cities</h3>
+
+@if (cities == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ul>
+        @foreach (var city in cities)
+        {
+            <li>@city.Name (@city.CountryCode)</li>
+        }
+    </ul>
+}
+
+@code {
+    private List<City> cities;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cities = await CityService.GetCitiesAsync();
+    }
+}
