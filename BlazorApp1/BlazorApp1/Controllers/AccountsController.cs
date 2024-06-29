@@ -1,6 +1,7 @@
 ﻿using BlazorApp1.Models;
 using BlazorApp1.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BlazorApp1.Controllers
@@ -17,16 +18,16 @@ namespace BlazorApp1.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCities()
+        public async Task<IActionResult> GetAllAccounts()
         {
-            var cities = await _accountService.GetCitiesAsync();
-            return Ok(cities);
+            var accounts = await _accountService.GetAllAccountsAsync();
+            return Ok(accounts);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAccountById(int id)
         {
-            var account = await _accountService.GetAccountAsync(id);
+            var account = await _accountService.GetAccountByIdAsync(id);
             if (account == null)
             {
                 return NotFound();

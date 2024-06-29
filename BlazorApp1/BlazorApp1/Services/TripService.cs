@@ -1,39 +1,44 @@
 ﻿using BlazorApp1.Data;
 using BlazorApp1.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-public class TripService
+namespace BlazorApp1.Services
 {
-    private readonly TripServiceDbContext _context;
-
-    public TripService(TripServiceDbContext context)
+    public class TripService
     {
-        _context = context;
-    }
+        private readonly TripServiceDbContext _context;
 
-    public async Task<List<Trip>> GetAllTripsAsync()
-    {
-        return await _context.Trips.Include(t => t.Room).ToListAsync();
-    }
-
-    public async Task AddTripAsync(Trip trip)
-    {
-        _context.Trips.Add(trip);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task DeleteTripAsync(int id)
-    {
-        var trip = await _context.Trips.FindAsync(id);
-        if (trip != null)
+        public TripService(TripServiceDbContext context)
         {
-            _context.Trips.Remove(trip);
+            _context = context;
+        }
+
+        public async Task<List<Trip>> GetAllTripsAsync()
+        {
+            return await _context.Trips.Include(t => t.Room).ToListAsync();
+        }
+
+        public async Task AddTripAsync(Trip trip)
+        {
+            _context.Trips.Add(trip);
             await _context.SaveChangesAsync();
         }
-    }
 
-    public async Task<List<Trip>> GetTripsAsync()
-    {
-        return await _context.Trips.ToListAsync();
+        public async Task DeleteTripAsync(int id)
+        {
+            var trip = await _context.Trips.FindAsync(id);
+            if (trip != null)
+            {
+                _context.Trips.Remove(trip);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<List<Trip>> GetTripsAsync()
+        {
+            return await _context.Trips.ToListAsync();
+        }
     }
 }

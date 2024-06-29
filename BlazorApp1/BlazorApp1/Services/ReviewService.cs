@@ -41,5 +41,4 @@ namespace BlazorApp1.Services
             return await _context.Reviews.ToListAsync();
         }
     }
-
 }

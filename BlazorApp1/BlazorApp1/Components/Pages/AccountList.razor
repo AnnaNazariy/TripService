@@ -1,4 +1,5 @@
 ﻿@page "/accounts"
+@using BlazorApp1.Services
 @inject AccountService AccountService
 
 <h3>Accounts</h3>
@@ -18,10 +19,10 @@ else
 }
 
 @code {
-    private List<Account> accounts;
+    private List<Account>? accounts;
 
     protected override async Task OnInitializedAsync()
     {
-        accounts = await AccountService.GetAccountsAsync();
+        accounts = await AccountService.GetAllAccountsAsync();
     }
 }

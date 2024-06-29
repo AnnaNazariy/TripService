@@ -17,6 +17,11 @@ public class Program
 
         builder.Services.AddScoped<HotelService>();
         builder.Services.AddScoped<ReviewService>();
+        builder.Services.AddScoped<AccountService>();
+        builder.Services.AddScoped<RoomService>();
+        builder.Services.AddScoped<TripService>();
+        builder.Services.AddScoped<CityService>();
+        builder.Services.AddScoped<AccountTripService>();
 
         builder.Services.AddHttpClient();
 
@@ -42,8 +47,8 @@ public class Program
         app.UseRouting();
         app.UseAuthorization();
 
-        app.MapRazorPages();
         app.MapBlazorHub();
+        app.MapFallbackToPage("/_Host");
 
         app.Run();
     }
